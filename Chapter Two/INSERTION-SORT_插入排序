@@ -6,7 +6,7 @@ using namespace std;
 
 class Solution {
 public:
-	//插入排序
+	//插入排序----------------------------------------
 	static void InsertionSort(vector<int>& nums) {
 		for (int j = 1; j < nums.size(); j++)
 		{
@@ -23,6 +23,7 @@ public:
 			nums[i + 1] = key;
 		}
 	}
+	//插入排序----------------------------------------
 
 	//打印数组
 	static void Show(vector<int>& nums)
