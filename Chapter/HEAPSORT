@@ -1,0 +1,83 @@
+#include <vector>
+#include <iostream>
+#include <assert.h>
+using namespace std;
+
+class A
+{
+public:
+	A(vector<int> &&_arr)
+	{
+		arr = _arr;
+		length = arr.size();
+	}
+	int& operator[](int index)
+	{
+		assert(index > 0);
+		return arr[index - 1];
+	}
+
+
+
+	int heapSize;
+	int length;
+private:
+	vector<int> arr;
+};
+ostream& operator<<(ostream& out, A &arr)
+{
+	for (int i = 1;i <= arr.length;i++)
+	{
+		out << arr[i] << " ";
+	}
+	return out;
+}
+void MaxHeapify(A &arr, int i)
+{
+	int largest = 0;
+	int left = i << 1;
+	int right = (i << 1) + 1;
+	if (left <= arr.heapSize && arr[left] > arr[i])
+		largest = left;
+	else
+		largest = i;
+	if (right <= arr.heapSize && arr[right] > arr[largest])
+		largest = right;
+	if (largest != i)
+	{
+		int tmp = arr[i];
+		arr[i] = arr[largest];
+		arr[largest] = tmp;
+		MaxHeapify(arr, largest);
+	}
+}
+
+void BuildMazHeap(A &arr)
+{
+	arr.heapSize = arr.length;
+	for (int i = arr.length / 2;i > 0;i--)
+		MaxHeapify(arr, i);
+}
+
+void HeapSort(A &arr)
+{
+	BuildMazHeap(arr);
+	for (int i = arr.length;i > 1;i--)
+	{
+		int tmp = arr[1];
+		arr[1] = arr[i];
+		arr[i] = tmp;
+		arr.heapSize = arr.heapSize - 1;
+		MaxHeapify(arr, 1);
+	}
+}
+
+int main()
+{
+	vector<int> ar = { 12,32,3,22,5,13,16,8,9,1,33 };
+	A arr(std::move(ar));
+	HeapSort(arr);
+	cout << arr << endl;
+	//system("pause");
+	return 0;
+}
